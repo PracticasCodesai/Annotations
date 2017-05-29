@@ -3,6 +3,5 @@ public class Main {
         Number number = new Number(5);
         UpdateNumber updateNumber = new UpdateNumber();
         updateNumber.updateResults(number);
-        System.out.println(number.getNumber());
     }
 }
