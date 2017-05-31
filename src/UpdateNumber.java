@@ -17,8 +17,7 @@ public class UpdateNumber {
 
     private DecoratorNumber updateResult(Number number, Method method) {
         if (isMethodValid(method)){
-            DecoratorNumber decoratorNumber = new DecoratorNumber(number);
-            return decoratorNumber;
+            return new DecoratorNumber(number);
         }else{
             return null;
         }
@@ -28,5 +27,4 @@ public class UpdateNumber {
         return method.getAnnotation(AddToResult.class) != null
                 && method.getReturnType().toString().equals("int");
     }
-
 }

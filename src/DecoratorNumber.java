@@ -1,4 +1,3 @@
-
 public class DecoratorNumber extends Number {
 
     private Number number;
@@ -15,8 +14,8 @@ public class DecoratorNumber extends Number {
         try {
             AddToResult annotation = number.getClass().getMethod(getCurrentMethodName())
                     .getAnnotation(AddToResult.class);
-            if(annotation != null){
-                    result = addToResult(annotation.increment(),result);
+            if (annotation != null) {
+                result = addToResult(getIncrement(annotation), result);
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -25,12 +24,16 @@ public class DecoratorNumber extends Number {
         return result;
     }
 
+    protected int getIncrement(AddToResult annotation) {
+        // The pattern template is use for help test annotation
+        return annotation.increment();
+    }
 
-    private int addToResult(int increment, int result){
+    private int addToResult(int increment, int result) {
         return result + increment;
     }
 
-    private String getCurrentMethodName(){
+    private String getCurrentMethodName() {
         return new Exception().getStackTrace()[1].getMethodName();
     }
 }

@@ -20,6 +20,7 @@ public class UpdateNumberShould {
                         not(instanceOf(DecoratorNumber.class)));
     }
 
+
     private boolean hasAnnotation(Number number) {
         Method[] methods = number.getClass().getMethods();
         for(Method method : methods){
@@ -29,3 +30,5 @@ public class UpdateNumberShould {
     }
 
 }
+
+
