@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -8,11 +9,15 @@ public class DecoratorNumberShould {
     @Test
     void add_value_of_annotation_to_getInt_return() {
         int annotation = 5;
+        int mult = 2;
         Number number = new Number(5);
         Number decorator = new DecoratorStub(number,annotation);
 
-        assertThat(number.getInt()+annotation,is(decorator.getInt()));
+        assertThat(decorator.multiplication(mult),
+                is(number.multiplication(mult)+annotation));
+        assertThat(decorator.getInt(),is(number.getInt()+annotation));
     }
+
 }
 
 class DecoratorStub extends DecoratorNumber{

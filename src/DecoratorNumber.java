@@ -1,27 +1,31 @@
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class DecoratorNumber extends Number {
 
-    private Number number;
+    private Number parentNumber;
 
-    public DecoratorNumber(Number number) {
+    DecoratorNumber(Number number) {
         super(number.getInt());
-        this.number = number;
+        this.parentNumber = number;
     }
 
     @Override
     public int getInt() {
-        int result = super.getInt();
+        return addToResult();
+    }
 
-        try {
-            AddToResult annotation = number.getClass().getMethod(getCurrentMethodName())
-                    .getAnnotation(AddToResult.class);
-            if (annotation != null) {
-                result = addToResult(getIncrement(annotation), result);
-            }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public int multiplication(int mult) {
+        return addToResult(mult);
+    }
 
-        return result;
+    private int addToResult(Object... params) {
+        Method method = getMethod(parentNumber.getClass(), getCallMethodName());
+        int result = (int) dynamicSuper(method, params);
+        AddToResult annotation = method.getAnnotation(AddToResult.class);
+
+        return addToResult(getIncrement(annotation), result);
     }
 
     protected int getIncrement(AddToResult annotation) {
@@ -33,7 +37,27 @@ public class DecoratorNumber extends Number {
         return result + increment;
     }
 
-    private String getCurrentMethodName() {
-        return new Exception().getStackTrace()[1].getMethodName();
+    private String getCallMethodName() {
+        return new Exception().getStackTrace()[2].getMethodName();
+    }
+
+    private Method getMethod(Class clazz, String name){
+        for (Method method: clazz.getDeclaredMethods()) {
+            if(method.getName().equals(name)){
+                return method;
+            }
+        }
+        return null;
+    }
+
+    private Object dynamicSuper(Method method, Object... params){
+        try {
+            return (params == null) ?
+                    method.invoke(parentNumber) :
+                    method.invoke(parentNumber, params);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
