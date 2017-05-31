@@ -1,8 +1,8 @@
 import java.lang.reflect.Method;
 
-public class UpdateNumber {
+class UpdateNumber {
 
-    public Number updateResults(Number number) {
+    Number updateResults(Number number) {
         Class<?> typeClass = number.getClass();
 
         Method[] methods = typeClass.getMethods();
@@ -16,11 +16,7 @@ public class UpdateNumber {
     }
 
     private DecoratorNumber updateResult(Number number, Method method) {
-        if (isMethodValid(method)){
-            return new DecoratorNumber(number);
-        }else{
-            return null;
-        }
+        return isMethodValid(method) ? new DecoratorNumber(number) : null;
     }
 
     private boolean isMethodValid(Method method) {

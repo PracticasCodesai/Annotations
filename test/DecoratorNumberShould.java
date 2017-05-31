@@ -3,8 +3,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-
-public class DecoratorNumberShould {
+class DecoratorNumberShould {
 
     @Test
     void add_value_of_annotation_to_getInt_return() {
