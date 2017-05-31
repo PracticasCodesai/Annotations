@@ -1,14 +1,14 @@
 public class Number {
 
-    private final int number;
+    private final int n;
 
-    public Number(int number) {
-        this.number = number;
+    public Number(int n) {
+        this.n = n;
     }
 
     @AddToResult(increment = 5)
-    public int getNumber() {
-        return number;
+    public int getInt() {
+        return n;
     }
 
 }

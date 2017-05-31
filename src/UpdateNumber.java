@@ -1,23 +1,26 @@
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class UpdateNumber {
 
-    public void updateResults(Object number) {
+    public Number updateResults(Number number) {
         Class<?> typeClass = number.getClass();
 
         Method[] methods = typeClass.getMethods();
         for (Method method : methods) {
-            updateResult(number, method);
+            DecoratorNumber decorator = updateResult(number, method);
+            if(decorator != null){
+                return decorator;
+            }
         }
+        return number;
     }
 
-    private void updateResult(Object object, Method method) {
-        if (isMethodValid(method)) try {
-            int result = (Integer) method.invoke(object, (Object[]) null);
-            System.out.println(result + method.getAnnotation(AddToResult.class).increment());
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+    private DecoratorNumber updateResult(Number number, Method method) {
+        if (isMethodValid(method)){
+            DecoratorNumber decoratorNumber = new DecoratorNumber(number);
+            return decoratorNumber;
+        }else{
+            return null;
         }
     }
 
