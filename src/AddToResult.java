@@ -6,5 +6,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface AddToResult {
-    int increment() default 1;
+    int increment() default 0;
 }
