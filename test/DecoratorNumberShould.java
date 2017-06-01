@@ -7,9 +7,9 @@ class DecoratorNumberShould {
 
     @Test
     void add_value_of_annotation_to_all_methods_return() throws NoSuchMethodException {
+        Number number = new NumberWrapper(5);
+        Number decorator = FactoryNumber.number(5);
         int mult = 2;
-        Number number = new Number(5);
-        Number decorator = new DecoratorNumber(number);
 
         AddToResult annotationGetInt =  number.getClass()
                 .getDeclaredMethod("getInt").getAnnotation(AddToResult.class);
