@@ -3,29 +3,30 @@ import java.lang.reflect.Method;
 
 public class DecoratorNumber implements InvocationHandler{
 
-    private Number parentNumber;
+    private Number number;
 
     DecoratorNumber(Number number) {
-        this.parentNumber = number;
+        this.number = number;
     }
 
-    private int addToResult(int increment, int result) {
-        return result + increment;
+    private int addToResult(int result, Method numberMethod) {
+        if (numberMethod != null) {
+            AddToResult annotation = numberMethod.getAnnotation(AddToResult.class);
+            return annotation.increment() + result;
+        }
+        return result;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Object result = method.invoke(parentNumber, args);
-        Method numberMethod = getMethod(method);
-        if (numberMethod != null) {
-            AddToResult annotation = numberMethod.getAnnotation(AddToResult.class);
-            return addToResult((int)result, annotation.increment());
-        }
-        return null;
+        Object result = method.invoke(number, args);
+        Method numberMethod = getNumberMethod(method);
+
+        return addToResult((int)result, numberMethod);
     }
 
-    private Method getMethod(Method method) {
-        Method[] methods = parentNumber.getClass().getMethods();
+    private Method getNumberMethod(Method method) {
+        Method[] methods = number.getClass().getDeclaredMethods();
         for (Method currentMethod : methods) {
             if(currentMethod.getName().equals(method.getName())){return currentMethod;}
         }
