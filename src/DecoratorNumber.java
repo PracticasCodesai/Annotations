@@ -24,13 +24,7 @@ public class DecoratorNumber extends Number {
         Method method = getMethod(parentNumber.getClass(), getCallMethodName());
         int result = (int) dynamicSuper(method, params);
         AddToResult annotation = method.getAnnotation(AddToResult.class);
-
-        return addToResult(getIncrement(annotation), result);
-    }
-
-    protected int getIncrement(AddToResult annotation) {
-        // The pattern template is use for help test annotation
-        return annotation.increment();
+        return addToResult(annotation.increment(), result);
     }
 
     private int addToResult(int increment, int result) {
